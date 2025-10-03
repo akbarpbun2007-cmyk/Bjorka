@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jual Beli Baju - Daftar Produk</title>
+    <style>
+        ul { padding: 0; }
+        li {
+            list-style: none;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            max-width: 300px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daftar Produk Baju</h1>
+    <ul>
+        {% for product in products %}
+            <li>
+                <img src="{{ url_for('static', filename=product.image_url) }}" alt="{{ product.name }}">
+                <a href="/product/{{ product.id }}">{{ product.name }}</a><br>
+                Harga: Rp{{ "{:,}".format(product.price) }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
 
