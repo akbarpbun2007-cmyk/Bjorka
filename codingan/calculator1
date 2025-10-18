@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Crypto Calculator — Konverter Crypto ↔ Fiat</title>
+  <style>
+    :root{font-family:Inter,system-ui,Arial,Helvetica,sans-serif}
+    body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f4f6fb;padding:20px}
+    .card{width:100%;max-width:720px;background:white;border-radius:12px;box-shadow:0 8px 30px rgba(12,20,40,0.08);padding:22px}
+    h1{font-size:20px;margin:0 0 12px}
+    .row{display:flex;gap:12px;margin-bottom:12px}
+    .col{flex:1;min-width:0}
+    label{font-size:12px;color:#334155;display:block;margin-bottom:6px}
+    input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e8ef;font-size:14px}
+    .controls{display:flex;gap:8px;align-items:center}
+    button{padding:10px 14px;border-radius:8px;border:0;background:#3b82f6;color:white;font-weight:600;cursor:pointer}
+    .result{background:#f8fafc;padding:12px;border-radius:8px;border:1px solid #eef2ff;margin-top:12px}
+    .small{font-size:13px;color:#475569}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .meta span{background:#eef2ff;padding:6px 10px;border-radius:999px;font-weight:600}
+    footer{margin-top:12px;font-size:12px;color:#64748b}
+    @media(max-width:520px){.row{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Crypto Calculator — Konversi Crypto ↔ Fiat</h1>
+
+    <div class="row">
+      <div class="col">
+        <label for="crypto">Cryptocurrency</label>
+        <select id="crypto"></select>
+      </div>
+      <div class="col">
+        <label for="fiat">Fiat</label>
+        <select id="fiat">
+          <option value="usd">USD</option>
+          <option value="idr">IDR</option>
+          <option value="eur">EUR</option>
+          <option value="jpy">JPY</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label for="direction">Arah konversi</label>
+        <select id="direction">
+          <option value="crypto-to-fiat">Crypto → Fiat</option>
+          <option value="fiat-to-crypto">Fiat → Crypto</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="amount">Jumlah</label>
+        <input id="amount" type="number" inputmode="decimal" placeholder="Masukkan jumlah" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label for="fee">Biaya transaksi (%)</label>
+        <input id="fee" type="number" min="0" step="0.01" value="0.25" />
+      </div>
+      <div class="col controls" style="align-items:flex-end;">
+        <button id="convert">Konversi</button>
+        <button id="refresh" style="background:#10b981">Refresh harga</button>
+      </div>
+    </div>
+
+    <div id="status" class="small">Memuat daftar koin...</div>
+
+    <div id="result" class="result" style="display:none">
+      <div id="output" class="small"></div>
+      <div class="meta" id="meta"></div>
+    </div>
+
+    <footer>Data harga disediakan oleh <strong>CoinGecko</strong> (public API). Koneksi internet diperlukan.</footer>
+  </div>
+
+  <script>
+    // Simple but practical crypto calculator using CoinGecko public API.
+    // Works: pilih koin, fiat, arah, jumlah, dan tombol Konversi.
+    // Note: API rate limits apply. For production, consider server-side caching.
+
+    const cryptoSelect = document.getElementById('crypto');
+    const fiatSelect = document.getElementById('fiat');
+    const directionEl = document.getElementById('direction');
+    const amountEl = document.getElementById('amount');
+    const feeEl = document.getElementById('fee');
+    const convertBtn = document.getElementById('convert');
+    const refreshBtn = document.getElementById('refresh');
+    const status = document.getElementById('status');
+    const result = document.getElementById('result');
+    const output = document.getElementById('output');
+    const meta = document.getElementById('meta');
+
+    let coins = []; // {id,symbol,name}
+    let prices = {}; // price cache: prices[coinId] = {usd:..., idr:...}
+
+    async function fetchTopCoins() {
+      status.textContent = 'Mengambil daftar koin...' ;
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=60&page=1&sparkline=false');
+        if(!res.ok) throw new Error('Gagal mengambil daftar koin');
+        const data = await res.json();
+        coins = data.map(c=>({id:c.id,symbol:c.symbol.toUpperCase(),name:c.name}));
+        populateCoins();
+        status.textContent = 'Daftar koin siap. Klik Refresh harga untuk memperbarui harga.';
+      } catch(err) {
+        console.error(err);
+        status.textContent = 'Gagal memuat daftar koin. Cek koneksi atau coba lagi.';
+      }
+    }
+
+    function populateCoins(){
+      cryptoSelect.innerHTML = '';
+      coins.forEach(c=>{
+        const o = document.createElement('option');
+        o.value = c.id;
+        o.textContent = c.name + ' (' + c.symbol + ')';
+        cryptoSelect.appendChild(o);
+      });
+    }
+
+    async function refreshPrices(){
+      const coinIds = coins.slice(0,50).map(c=>c.id).join(',');
+      const vs = fiatSelect.value;
+      status.textContent = 'Mengambil harga ...';
+      try{
+        const url = `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(coinIds)}&vs_currencies=${encodeURIComponent(vs)}&include_last_updated_at=true`;
+        const res = await fetch(url);
+        if(!res.ok) throw new Error('Gagal mengambil harga');
+        const json = await res.json();
+        prices = json; // store raw
+        status.textContent = 'Harga diperbarui.';
+      }catch(e){
+        console.error(e);
+        status.textContent = 'Gagal memperbarui harga.';
+      }
+    }
+
+    function fmt(n, currency){
+      if(n===undefined || n===null || isNaN(n))
