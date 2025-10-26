@@ -1,54 +1,187 @@
-products = [
-    {"id": 1, "name": "Kaos Baju Polos", "price": 50000, "image_url": "images/kaosbaju.jpg"},
-    {"id": 2, "name": "Seragam Sekolah", "price": 120000, "image_url": "images/seragam.jpg"},
-    {"id": 3, "name": "Celana Jeans", "price": 150000, "image_url": "images/celana.jpg"},
-]
-
-html = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Jual Beli Baju - Daftar Produk</title>
-    <style>
-        ul { padding: 0; }
-        li {
-            list-style: none;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            max-width: 300px;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin-bottom: 8px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jual Beli Baju - Daftar Produk</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: linear-gradient(180deg, #0f0f0f, #1b1b1b, #000000);
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #00bcd4;
+    }
+    ul {
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    li {
+      list-style: none;
+      background: #111;
+      border: 1px solid #222;
+      padding: 15px;
+      max-width: 250px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 12px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    li:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 15px rgba(0,188,212,0.4);
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    a.product-name {
+      font-weight: bold;
+      font-size: 18px;
+      color: #00bcd4;
+      text-decoration: none;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    a.product-name:hover {
+      text-decoration: underline;
+    }
+    .price {
+      font-weight: bold;
+      color: #ff5252;
+      margin-bottom: 8px;
+    }
+    .description {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 10px;
+      text-align: center;
+      min-height: 40px;
+    }
+    .stock {
+      font-size: 13px;
+      color: #4caf50;
+      margin-bottom: 12px;
+    }
+    button.buy-btn {
+      padding: 8px 15px;
+      background: linear-gradient(90deg, #007bff, #00bcd4);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button.buy-btn:hover {
+      background: linear-gradient(90deg, #0056b3, #0097a7);
+      transform: scale(1.05);
+    }
+    /* Popup styling */
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #00bcd4;
+      color: #000;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      display: none;
+      animation: fadeInOut 3s forwards;
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(-20px); }
+      10%, 90% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
+  </style>
 </head>
 <body>
-    <h1>Daftar Produk Baju</h1>
-    <ul>
-"""
+  <h1>🛍️ Daftar Produk Baju</h1>
+  <ul id="product-list">
+    <li data-stock="25">
+      <img src="https://ryusei.co.id/cdn/shop/products/WhatsAppImage2021-10-29at15.44.28_1.jpg?v=1659526002&width=700">
+      <a href="#" class="product-name">Kaos Baju Polos</a>
+      <div class="price">Harga: Rp50,000</div>
+      <div class="description">Kaos polos bahan katun yang nyaman dipakai sehari-hari.</div>
+      <div class="stock">Stok tersedia: <span class="stock-count">25</span> pcs</div>
+      <button class="buy-btn">Beli Sekarang</button>
+    </li>
+    <li data-stock="10">
+      <img src="https://www.atalon.id/cdn/shop/files/LIF_6745_749ac69e-5cff-466c-a161-90501e20d509.jpg?v=1698418342&width=800">
+      <a href="#" class="product-name">Celana Jeans</a>
+      <div class="price">Harga: Rp150,000</div>
+      <div class="description">Celana jeans trendy cocok untuk segala suasana.</div>
+      <div class="stock">Stok tersedia: <span class="stock-count">10</span> pcs</div>
+      <button class="buy-btn">Beli Sekarang</button>
+    </li>
+    <li data-stock="18">
+      <img src="https://gw.alicdn.com/imgextra/TB1SqYooV67gK0jSZPfSuuhhFXa.jpg_q90.jpg">
+      <a href="#" class="product-name">Kemeja Lengan Panjang</a>
+      <div class="price">Harga: Rp130,000</div>
+      <div class="description">Kemeja formal yang cocok untuk ke kantor maupun acara resmi.</div>
+      <div class="stock">Stok tersedia: <span class="stock-count">18</span> pcs</div>
+      <button class="buy-btn">Beli Sekarang</button>
+    </li>
+    <li data-stock="30">
+      <img src="https://wellborncompany.com/wp-content/uploads/2022/07/1-5.jpg">
+      <a href="#" class="product-name">Hoodie Kasual</a>
+      <div class="price">Harga: Rp170,000</div>
+      <div class="description">Hoodie hangat dengan desain modern dan nyaman dipakai.</div>
+      <div class="stock">Stok tersedia: <span class="stock-count">30</span> pcs</div>
+      <button class="buy-btn">Beli Sekarang</button>
+    </li>
+  </ul>
 
-for product in products:
-    html += f"""
-        <li>
-            <img src="{product['image_url']}" alt="{product['name']}">
-            <a href="/product/{product['id']}">{product['name']}</a><br>
-            Harga: Rp{product['price']:,}
-        </li>
-    """
+  <div id="popup" class="popup"></div>
 
-html += """
-    </ul>
+  <script>
+    const buttons = document.querySelectorAll('.buy-btn');
+    const popup = document.getElementById('popup');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', function() {
+        const product = this.closest('li');
+        const stockCount = product.querySelector('.stock-count');
+        let stock = parseInt(product.dataset.stock);
+
+        if (stock > 0) {
+          stock--;
+          product.dataset.stock = stock;
+          stockCount.textContent = stock;
+          showPopup(`✅ Pembelian berhasil! Stok tersisa: ${stock} pcs`);
+
+          if (stock === 0) {
+            this.disabled = true;
+            this.textContent = "Stok Habis";
+            this.style.background = "#555";
+          }
+        } else {
+          showPopup("❌ Stok habis!");
+        }
+      });
+    });
+
+    function showPopup(message) {
+      popup.textContent = message;
+      popup.style.display = 'block';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 3000);
+    }
+  </script>
 </body>
-</html>"""
-
-# Simpan ke file index.html
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(html)
-
-print("File index.html berhasil dibuat!")
-
+</html>
