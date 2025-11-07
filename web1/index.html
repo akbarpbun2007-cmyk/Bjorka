@@ -185,18 +185,10 @@
   </script>
 </body>
 </html>
-function beliProduk(namaProduk, hargaProduk) {
-  // Simpan data produk ke localStorage agar bisa diakses di halaman pengiriman
-  const dataProduk = {
-    nama: namaProduk,
-    harga: hargaProduk
-  };
-
-  localStorage.setItem("produkDipilih", JSON.stringify(dataProduk));
-
-  // Arahkan ke halaman pengiriman alamat
-  window.location.href = "pengiriman.html";
-}
- </script>
-</body>
-</html>
+<button onclick="beliProduk('Nama Produk', 120000)">Beli Sekarang</button>
+<script src="main.js"></script>
+<div id="infoProduk"></div>
+<form onsubmit="kirimData(event)">
+    <!-- input alamat di sini -->
+</form>
+<script src="pengiriman.js"></script>
