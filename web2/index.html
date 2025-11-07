@@ -1,126 +1,97 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Jual Beli Baju - Daftar Produk</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #000000;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        ul {
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        li {
-            list-style: none;
-            background: black;
-            border: 1px solid #ccc;
-            padding: 15px;
-            max-width: 250px;
-            box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-radius: 8px;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-        a.product-name {
-            font-weight: bold;
-            font-size: 18px;
-            color: #333;
-            text-decoration: none;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-        a.product-name:hover {
-            text-decoration: underline;
-            color: #007bff;
-        }
-        .price {
-            font-weight: bold;
-            color: #d9534f;
-            margin-bottom: 8px;
-        }
-        .description {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
-            text-align: center;
-            min-height: 40px;
-        }
-        .stock {
-            font-size: 13px;
-            color: #28a745;
-            margin-bottom: 12px;
-        }
-        button.buy-btn {
-            padding: 8px 15px;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button.buy-btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Pengiriman</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: white;
+      padding: 20px;
+    }
+    form {
+      max-width: 400px;
+      margin: 30px auto;
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #00aaff;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #222;
+      color: white;
+    }
+    button {
+      margin-top: 20px;
+      background: linear-gradient(180deg, #007bff, #0056d2);
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: linear-gradient(180deg, #0056d2, #003fa3);
+    }
+    .produk-info {
+      background: #1b1b1b;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Daftar Produk Baju</h1>
-    <ul>
-        <li>
-            <img src="https://ryusei.co.id/cdn/shop/products/WhatsAppImage2021-10-29at15.44.28_1.jpg?v=1659526002&width=700">
-            <a href="/product/1" class="product-name">Kaos Baju Polos</a>
-            <div class="price">Harga: Rp50,000</div>
-            <div class="description">Kaos polos bahan katun yang nyaman dipakai sehari-hari.</div>
-            <div class="stock">Stok tersedia: 25 pcs</div>
-            <button class="buy-btn">Beli Sekarang</button>
-    
-        </li>
-        <li>
-            <img src="https://www.atalon.id/cdn/shop/files/LIF_6745_749ac69e-5cff-466c-a161-90501e20d509.jpg?v=1698418342&width=800">
-            <a href="/product/3" class="product-name">Celana Jeans</a>
-            <div class="price">Harga: Rp150,000</div>
-            <div class="description">Celana jeans trendy cocok untuk segala suasana.</div>
-            <div class="stock">Stok tersedia: 10 pcs</div>
-            <button class="buy-btn">Beli Sekarang</button>
-        </li>
-        <li>
-            <img src="https://gw.alicdn.com/imgextra/TB1SqYooV67gK0jSZPfSuuhhFXa.jpg_q90.jpg">
-            <a href="/product/4" class="product-name">Kemeja Lengan Panjang</a>
-            <div class="price">Harga: Rp130,000</div>
-            <div class="description">Kemeja formal yang cocok untuk ke kantor maupun acara resmi.</div>
-            <div class="stock">Stok tersedia: 18 pcs</div>
-            <button class="buy-btn">Beli Sekarang</button>
-        </li>
-        <li>
-            <img src="https://wellborncompany.com/wp-content/uploads/2022/07/1-5.jpg">
-            <a href="/product/5" class="product-name">Hoodie Kasual</a>
-            <div class="price">Harga: Rp170,000</div>
-            <div class="description">Hoodie hangat dengan desain modern dan nyaman dipakai.</div>
-            <div class="stock">Stok tersedia: 30 pcs</div>
-            <button class="buy-btn">Beli Sekarang</button>
-        </li>
-    </ul>
+  <h2>Alamat Pengiriman</h2>
+  <div class="produk-info" id="infoProduk"></div>
+
+  <form onsubmit="kirimData(event)">
+    <label>Nama Lengkap:</label>
+    <input type="text" required>
+
+    <label>Nomor Telepon:</label>
+    <input type="tel" required>
+
+    <label>Alamat Lengkap:</label>
+    <textarea rows="3" required></textarea>
+
+    <button type="submit">Kirim</button>
+  </form>
+
+  <script>
+    // Tampilkan produk yang dipilih
+    const produk = JSON.parse(localStorage.getItem('produkDipilih'));
+    if (produk) {
+      document.getElementById('infoProduk').innerHTML = `
+        <strong>Produk:</strong> ${produk.nama}<br>
+        <strong>Harga:</strong> Rp${produk.harga.toLocaleString()}
+      `;
+    }
+
+    function kirimData(event) {
+      event.preventDefault();
+      alert('Alamat pengiriman telah disimpan! Terima kasih sudah berbelanja.');
+      localStorage.removeItem('produkDipilih');
+      window.location.href = 'index.html';
+    }
+  </script>
 </body>
 </html>
-
-
