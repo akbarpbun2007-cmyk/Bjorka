@@ -185,3 +185,30 @@
   </script>
 </body>
 </html>
+// ====== Menampilkan data produk di halaman pengiriman ======
+document.addEventListener("DOMContentLoaded", () => {
+  const data = JSON.parse(localStorage.getItem("produkDipilih"));
+
+  if (data) {
+    const infoProduk = document.getElementById("infoProduk");
+    if (infoProduk) {
+      infoProduk.innerHTML = `
+        <strong>Produk:</strong> ${data.nama}<br>
+        <strong>Harga:</strong> Rp${data.harga.toLocaleString()}
+      `;
+    }
+  }
+});
+
+// ====== Proses submit alamat ======
+function kirimData(event) {
+  event.preventDefault();
+
+  alert("Alamat pengiriman telah disimpan! Terima kasih sudah berbelanja.");
+
+  // Hapus data produk dari localStorage setelah dikirim
+  localStorage.removeItem("produkDipilih");
+
+  // Arahkan kembali ke halaman utama
+  window.location.href = "index.html";
+}
