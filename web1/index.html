@@ -185,10 +185,33 @@
   </script>
 </body>
 </html>
-<button onclick="beliProduk('Nama Produk', 120000)">Beli Sekarang</button>
-<script src="main.js"></script>
-<div id="infoProduk"></div>
-<form onsubmit="kirimData(event)">
-    <!-- input alamat di sini -->
-</form>
-<script src="pengiriman.js"></script>
+<script>
+ <script>
+  // Ganti dengan nomor WhatsApp admin (format internasional tanpa tanda +)
+  const nomorAdmin = "6281234567890";
+
+  document.getElementById("formPengiriman").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const nama = document.getElementById("nama").value;
+    const telp = document.getElementById("telp").value;
+    const alamat = document.getElementById("alamat").value;
+    const produk = JSON.parse(localStorage.getItem("produkDipilih"));
+
+    // Buat pesan WhatsApp
+    let pesan = `Halo Admin! Saya ingin memesan:\n\n`;
+    pesan += `🛍️ Produk: ${produk ? produk.nama : "Tidak diketahui"}\n`;
+    pesan += `💰 Harga: Rp${produk ? produk.harga.toLocaleString() : "0"}\n\n`;
+    pesan += `📦 Nama: ${nama}\n📞 No. HP: ${telp}\n🏠 Alamat: ${alamat}\n\n`;
+    pesan += `Terima kasih!`;
+
+    // Encode dan buka WhatsApp
+    const url = `https://wa.me/${nomorAdmin}?text=${encodeURIComponent(pesan)}`;
+    window.open(url, "_blank");
+
+    // Bersihkan data
+    localStorage.removeItem("produkDipilih");
+    alert("Pesanan Anda akan dikirim ke WhatsApp admin.");
+    window.location.href = "index.html";
+  });
+</script>
