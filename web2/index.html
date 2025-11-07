@@ -133,3 +133,42 @@
     </script>
 </body>
 </html>
+ <div id="popup" class="popup"></div>
+
+  <script>
+    const buttons = document.querySelectorAll('.buy-btn');
+    const popup = document.getElementById('popup');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', function() {
+        const product = this.closest('li');
+        const stockCount = product.querySelector('.stock-count');
+        let stock = parseInt(product.dataset.stock);
+
+        if (stock > 0) {
+          stock--;
+          product.dataset.stock = stock;
+          stockCount.textContent = stock;
+          showPopup(`✅ Pembelian berhasil! Stok tersisa: ${stock} pcs`);
+
+          if (stock === 0) {
+            this.disabled = true;
+            this.textContent = "Stok Habis";
+            this.style.background = "#555";
+          }
+        } else {
+          showPopup("❌ Stok habis!");
+        }
+      });
+    });
+
+    function showPopup(message) {
+      popup.textContent = message;
+      popup.style.display = 'block';
+      setTimeout(() => {
+        popup.style.display = 'none';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
