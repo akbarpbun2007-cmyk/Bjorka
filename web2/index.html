@@ -172,3 +172,100 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Pengiriman</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: white;
+      padding: 20px;
+    }
+    form {
+      max-width: 400px;
+      margin: 30px auto;
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #00aaff;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #222;
+      color: white;
+    }
+    button {
+      margin-top: 20px;
+      background: linear-gradient(180deg, #007bff, #0056d2);
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: linear-gradient(180deg, #0056d2, #003fa3);
+    }
+    .produk-info {
+      background: #1b1b1b;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Alamat Pengiriman</h2>
+  <div class="produk-info" id="infoProduk"></div>
+
+  <form onsubmit="kirimData(event)">
+    <label>Nama Lengkap:</label>
+    <input type="text" required>
+
+    <label>Nomor Telepon:</label>
+    <input type="tel" required>
+
+    <label>Alamat Lengkap:</label>
+    <textarea rows="3" required></textarea>
+
+    <button type="submit">Kirim</button>
+  </form>
+
+  <script>
+    // Tampilkan produk yang dipilih
+    const produk = JSON.parse(localStorage.getItem('produkDipilih'));
+    if (produk) {
+      document.getElementById('infoProduk').innerHTML = `
+        <strong>Produk:</strong> ${produk.nama}<br>
+        <strong>Harga:</strong> Rp${produk.harga.toLocaleString()}
+      `;
+    }
+
+    function kirimData(event) {
+      event.preventDefault();
+      alert('Alamat pengiriman telah disimpan! Terima kasih sudah berbelanja.');
+      localStorage.removeItem('produkDipilih');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
